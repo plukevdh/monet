@@ -20,15 +20,15 @@ Or install it yourself as:
 
 The basic gem requires a config file that is somehow called on the app startup. This config primarily exists to give the gem a list of paths it needs to collect and either baseline or compare to previous baselines. This config might look something like this:
 
-Monet::Config do |config|
-	config.driver = :poltergeist
-	config.dimensions = [1440,900]
+    Monet::Config do |config|
+	  config.driver = :poltergeist
+	  config.dimensions = [1440,900]
 
-	config.map do |map|
+	  config.map do |map|
 		map.add 'home/index'
 		map.add 'home/show'
-	end
-end
+	  end
+    end
 
 ## Todo
 - Browser/driver config
