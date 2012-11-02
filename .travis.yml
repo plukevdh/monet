@@ -3,3 +3,9 @@ rvm:
   - 1.9.3
   - jruby-19mode # JRuby in 1.9 mode
   - rbx-19mode
+
+before_install:
+  - wget http://phantomjs.googlecode.com/files/phantomjs-1.7.0-linux-i686.tar.bz2
+  - tar -xf phantomjs-1.7.0-linux-i686.tar.bz2
+  - sudo rm -rf /usr/local/phantomjs
+  - sudo mv phantomjs-1.7.0-linux-i686 /usr/local/phantomjs
