@@ -32,6 +32,7 @@ The basic gem requires a config file that is somehow called on the app startup. 
 
 ## Todo
 - Browser/driver config
+- Parallelize PNG diffing
 - Rails integration
 - Sinatra/Rack integration
 - Web UI
