@@ -1,4 +1,4 @@
-# Monet
+# Monet ![Build Status](https://travis-ci.org/plukevdh/monet.png)
 
 Monet is a libary built for making testing interfaces and design easy. We all have interfaces that we've added a new button, changed some CSS, or added new javascript interaction to and had the page layout explode unexpectedly. Monet is meant to make tracking those changes and ensuring consistent automatably easy.
 
