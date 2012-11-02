@@ -6,17 +6,26 @@ module Monet
     extend Forwardable
 
     class Changeset
-      def initialize(pixel_array)
+      def initialize(base_image, pixel_array)
+        @base_image = base_image
         @changed_pixels = pixel_array
       end
 
       def modified?
-        @changed_pixels.length > 0
+        pixels_changed > 0
+      end
+
+      def pixels_changed
+        @changed_pixels.count
+      end
+
+      def percentage_changed
+        ((pixels_changed.to_f / @base_image.area.to_f) * 100).round(2)
       end
     end
 
-    def intialize
-      @changeset = Changeset.new
+    def initialize(strategy=ColorBlend)
+      @strategy_class = strategy
     end
 
     def compare(base_image, new_image)
@@ -26,7 +35,7 @@ module Monet
       diff_stats = []
 
       # TODO: make configurable
-      diff_strategy = ColorBlend.new(base_png, new_png)
+      diff_strategy = @strategy_class.new(base_png, new_png)
 
       base_png.height.times do |y|
         base_png.row(y).each_with_index do |pixel, x|
@@ -34,7 +43,7 @@ module Monet
         end
       end
 
-      changeset = Changeset.new(diff_strategy.score)
+      changeset = Changeset.new(base_png, diff_strategy.score)
       diff_strategy.save(diff_filename(base_image)) if changeset.modified?
 
       changeset

@@ -5,9 +5,11 @@ module Monet
     attr_reader :score
 
     def initialize(base_image, diff_image)
-      @diff_image = diff_image
       @base_image = base_image
+      @diff_image = diff_image
       @score = []
+
+      raise Errors::DifferentDimensions unless dimensions_match?
     end
 
     def calculate_for_pixel(pixel, x, y)
@@ -16,6 +18,12 @@ module Monet
 
     def save(filename)
       @output.save(filename)
+    end
+
+    private
+    def dimensions_match?
+      @base_image.width == @diff_image.width &&
+      @base_image.height == @diff_image.height
     end
   end
 
