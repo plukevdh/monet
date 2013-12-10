@@ -54,4 +54,4 @@ Big shout to __Jeff Kreeftmeijer__ for his blog post on [ChunkyPNG](http://jeffk
 ## Alternatives
 
 - https://github.com/intridea/green_onion : Mostly the same thing I did here, but I didn't know about it starting out. I like what they did, but I had a different take, so I decided to pursue my version to the end.
-
+- https://github.com/BBC-News/wraith : Similar idea again, but more limited in features, also doesn't allow for baselining, more of a multi-site/URL compare.
