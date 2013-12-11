@@ -25,6 +25,11 @@ module Monet
       @base_image.width == @diff_image.width &&
       @base_image.height == @diff_image.height
     end
+
+    private
+    def for_color(color, *params)
+      send color, *params
+    end
   end
 
   class Grayscale < DiffStrategy
@@ -36,11 +41,11 @@ module Monet
     def calculate_for_pixel(pixel, x, y)
       return if pixel == @diff_image[x,y]
 
-      score = Math.sqrt(
-        (r(@diff_image[x,y]) - r(pixel)) ** 2 +
-        (g(@diff_image[x,y]) - g(pixel)) ** 2 +
-        (b(@diff_image[x,y]) - b(pixel)) ** 2
-      ) / Math.sqrt(MAX ** 2 * 3)
+      rgb_colors = %w(r g b).map do |color|
+        for_color(color, @diff_image[x,y]) - for_color(color, pixel)
+      end
+
+      score = Math.sqrt(rgb_colors.reduce(0) {|memo, diff| memo += (diff ** 2) } ) / Math.sqrt(MAX ** 2 * 3)
 
       @output[x,y] = grayscale(MAX - (score * MAX).round)
       super
@@ -60,11 +65,6 @@ module Monet
 
       @output[x,y] = rgb(*rgb_colors)
       super
-    end
-
-    private
-    def for_color(color, *params)
-      send color, *params
     end
   end
 end

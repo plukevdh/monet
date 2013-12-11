@@ -20,7 +20,7 @@ describe Monet::Compare do
 
     context "modified image" do
       after do
-        File.delete(diff_name)
+        # File.delete(diff_name)
       end
 
       When(:result) { compare.compare(image_base, image_diff) }
@@ -36,7 +36,7 @@ describe Monet::Compare do
 
   context "grayscale compare" do
     after do
-      File.delete(diff_name)
+      # File.delete(diff_name)
     end
 
     Given(:compare) { Monet::Compare.new(Monet::Grayscale) }
