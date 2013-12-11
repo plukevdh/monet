@@ -32,6 +32,7 @@ Gem::Specification.new do |gem|
   if RUBY_ENGINE == 'rbx'
     gem.add_dependency('rubysl')
     gem.add_dependency('racc')
+    gem.add_dependency('json')
   end
 
   gem.add_development_dependency('rspec-given')
