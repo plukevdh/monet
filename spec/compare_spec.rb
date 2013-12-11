@@ -29,7 +29,8 @@ describe Monet::Compare do
     end
 
     context "rejects mismatched dimensions" do
-      Then { expect { compare.compare(image_base, image_diff_size) }.to have_failed(Monet::Errors::DifferentDimensions, /different dimensions/) }
+      When(:result) { compare.compare(image_base, image_diff_size) }
+      Then { result.should have_failed(Monet::Errors::DifferentDimensions, /different dimensions/) }
     end
   end
 

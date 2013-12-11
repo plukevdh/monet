@@ -18,7 +18,8 @@ end
 
 describe Monet::CaptureMap do
   context "no arguments" do
-    Then { expect { Monet::CaptureMap.new }.to have_failed(ArgumentError) }
+    When(:result) { Monet::CaptureMap.new }
+    Then { result.should have_failed(ArgumentError) }
   end
 
   context "with name" do
