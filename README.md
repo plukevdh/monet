@@ -1,4 +1,6 @@
-# Monet [![Build Status](https://travis-ci.org/plukevdh/monet.png?branch=master)](https://travis-ci.org/plukevdh/monet)
+# Monet
+[![Build Status](https://travis-ci.org/plukevdh/monet.png?branch=master)](https://travis-ci.org/plukevdh/monet)
+[![Code Climate](https://codeclimate.com/github/plukevdh/monet.png)](https://codeclimate.com/github/plukevdh/monet)
 
 Monet is a libary built for making testing interfaces and design easy. We all have interfaces that we've added a new button, changed some CSS, or added new javascript interaction to and had the page layout explode unexpectedly. Monet is meant to make tracking those changes and ensuring consistent automatably easy.
 
@@ -43,9 +45,9 @@ The basic gem requires a config file that is somehow called on the app startup. 
 2. Branch it (`git checkout -b my-new-feature`)
 3. Commit it (`git commit -am 'Add some feature'`)
 4. Push it (`git push origin my-new-feature`)
-5. Pull Request it! 
+5. Pull Request it!
 
-Willing to consider commit bit priviledges to anyone who expresses extreme interest in the project. 
+Willing to consider commit bit priviledges to anyone who expresses extreme interest in the project.
 
 ## Credits
 
