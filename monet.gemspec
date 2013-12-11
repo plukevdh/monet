@@ -29,7 +29,10 @@ Gem::Specification.new do |gem|
   # gem.add_dependency('chunky_png')
   gem.add_dependency('oily_png')
 
-  gem.add_dependency('rubysl') if RUBY_ENGINE == 'rbx'
+  if RUBY_ENGINE == 'rbx'
+    gem.add_dependency('rubysl')
+    gem.add_dependency('racc')
+  end
 
   gem.add_development_dependency('rspec-given')
   gem.add_development_dependency('rspec')
