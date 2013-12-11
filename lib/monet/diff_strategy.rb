@@ -54,12 +54,17 @@ module Monet
     end
 
     def calculate_for_pixel(pixel, x, y)
-      @output[x,y] = rgb(
-        r(pixel) + r(@diff_image[x,y]) - 2 * [r(pixel), r(@diff_image[x,y])].min,
-        g(pixel) + g(@diff_image[x,y]) - 2 * [g(pixel), g(@diff_image[x,y])].min,
-        b(pixel) + b(@diff_image[x,y]) - 2 * [b(pixel), b(@diff_image[x,y])].min
-      )
+      rgb_colors = %w(r g b).map do |color|
+        for_color(color, pixel) + for_color(color, @diff_image[x,y]) - 2 * [for_color(color, pixel), for_color(color, @diff_image[x,y])].min
+      end
+
+      @output[x,y] = rgb(*rgb_colors)
       super
+    end
+
+    private
+    def for_color(color, *params)
+      send color, *params
     end
   end
 end
