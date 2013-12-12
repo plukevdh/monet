@@ -3,7 +3,8 @@ require 'monet/capture'
 
 describe Monet::Capture do
   Given(:path) { File.expand_path './spec/tmp/output' }
-  Given(:capture_agent) { Monet::Capture.new(capture_dir: path) }
+  Given(:url) { "http://google.com" }
+  Given(:capture_agent) { Monet::Capture.new(capture_dir: path ) }
 
   before do
     Timecop.freeze
@@ -35,13 +36,15 @@ describe Monet::Capture do
   end
 
   context "converts name properly" do
-    When { capture_agent.capture('https://google.com') }
-    Then { File.exist?("#{path}/google_com-#{Time.now.to_i}.png").should be_true }
+    Given(:capture_agent) { Monet::Capture.new(capture_dir: path, base_url: url) }
+    When { capture_agent.capture("/", 1024) }
+    Then { File.exist?("#{path}/google.com/-1024.png").should be_true }
   end
 
   context "prepends default protocol if missing" do
-    When { capture_agent.capture('www.facebook.com') }
-    Then { File.exist?("#{path}/www_facebook_com-#{Time.now.to_i}.png").should be_true }
+    Given(:capture_agent) { Monet::Capture.new(capture_dir: path, base_url: "http://www.facebook.com") }
+    When { capture_agent.capture('/', 1024) }
+    Then { File.exist?("#{path}/www.facebook.com/-1024.png").should be_true }
   end
 
 end

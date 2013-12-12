@@ -8,16 +8,28 @@ module Monet
   class Capture
     include Capybara::DSL
 
+    MAX_HEIGHT = 10000
+
     def initialize(config={})
       @config = (config.is_a? Monet::Config) ? config : Monet::Config.new(config)
 
-      # TODO: make configurable
       Capybara.default_driver = @config.driver
     end
 
-    def capture(path)
-      visit normalize_path(path)
-      page.driver.render(image_name_from_path(path), full: true)
+    def capture_all(paths, dimensions)
+      paths.each do |path|
+        dimensions.each do |width|
+          capture(path, width)
+        end
+      end
+    end
+
+    def capture(path, width)
+      url = normalize_path(path)
+      visit url
+
+      page.driver.resize(width, MAX_HEIGHT)
+      page.driver.render(image_name(url, width), full: true)
     end
 
     private
@@ -26,12 +38,12 @@ module Monet
     end
 
     def normalize_path(path)
-      "http://#{path}" unless path.start_with?("https?")
+      "#{@config.base_url}#{path}"
     end
 
-    def image_name_from_path(path)
-      name = path.gsub(/https?:\/\//, '').gsub('.', '_')
-      "#{capture_path}/#{name}-#{Time.now.to_i}.png"
+    def image_name(path, width)
+      name = path.gsub(/https?:\/\//, '').gsub(/\.]/, '_')
+      "#{capture_path}/#{name}-#{width}.png"
     end
   end
 end

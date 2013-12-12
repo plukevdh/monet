@@ -1,8 +1,10 @@
 require 'spidr'
+require 'monet/url_helpers'
 
 module Monet
   class CaptureMap
     extend Forwardable
+    include URLHelpers
 
     class PathCollection
       attr_reader :paths, :root_url
@@ -14,6 +16,10 @@ module Monet
 
       def add(path)
         @paths << normalized_path(path)
+      end
+
+      def paths=(paths)
+        @paths.concat paths.map {|p| normalized_path(p) }
       end
 
       def normalized_path(path)
@@ -39,8 +45,6 @@ module Monet
       end
     end
 
-    InvalidURL = Class.new(StandardError)
-
     attr_reader :type
 
     def initialize(root_url, type=:explicit, &block)
@@ -50,7 +54,7 @@ module Monet
       yield(@path_helper) if block_given?
     end
 
-    def_delegators :@path_helper, :paths, :add, :root_url
+    def_delegators :@path_helper, :paths, :paths=, :add, :root_url
 
     def type_mapper
       case @type

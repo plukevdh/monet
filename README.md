@@ -1,6 +1,4 @@
-# Monet
-[![Build Status](https://travis-ci.org/plukevdh/monet.png?branch=master)](https://travis-ci.org/plukevdh/monet)
-[![Code Climate](https://codeclimate.com/github/plukevdh/monet.png)](https://codeclimate.com/github/plukevdh/monet)
+# Monet [![Build Status](https://travis-ci.org/plukevdh/monet.png?branch=master)](https://travis-ci.org/plukevdh/monet) [![Code Climate](https://codeclimate.com/github/plukevdh/monet.png)](https://codeclimate.com/github/plukevdh/monet)
 
 Monet is a libary built for making testing interfaces and design easy. We all have interfaces that we've added a new button, changed some CSS, or added new javascript interaction to and had the page layout explode unexpectedly. Monet is meant to make tracking those changes and ensuring consistent automatably easy.
 
@@ -20,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-The basic gem requires a config file that is somehow called on the app startup. This config primarily exists to give the gem a list of paths it needs to collect and either baseline or compare to previous baselines. This config might look something like this:
+The basic gem requires a config file that is called in an app initializer or via the built-in rake task. This config primarily exists to give the gem a list of paths it needs to collect and either baseline or compare to previous baselines. This config might look something like this:
 
 ```ruby
 Monet.config do |config|
@@ -38,10 +36,30 @@ Monet.config do |config|
 end
 ```
 
+## Process
+
+Captures are saved into the following structure:
+
+```
+/captures
+	/baselines
+	/new
+```
+
+- /new is where the current capture run images are stored, pre-comparison with baseline.
+- /baselines is where all current baseline images are stored. persistent in-between capture runs.
+
+During the capture process, any new captures that do not have a match found in baselines to compare with are considered new baselines.  
+Any images that match baseline are discarded.  
+Any images that flag differences, are flagged for review.  
+
+Review involves checking flagged images and marking as 
+1. discard  
+2. flag as issue  
+3. accept as new baseline  
+
 ## Todo
-- Site spidering
 - Baseline caching
-- Browser/driver config
 - Parallelize PNG diffing
 - Dashboard
 - Rails integration
