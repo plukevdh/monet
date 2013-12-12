@@ -10,7 +10,7 @@ module Monet
       attr_reader :paths, :root_url
 
       def initialize(root_uri)
-        @root_url = root_uri.is_a?(URI) ? root_uri : parse_uri(root_uri)
+        @root_url = parse_uri(root_uri)
         @paths = []
       end
 
