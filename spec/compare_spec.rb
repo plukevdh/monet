@@ -45,7 +45,7 @@ describe Monet::Compare do
 
     Then { result.should be_modified }
     And { File.exist?(diff_name).should be_true }
-    And { result.pixels_changed.should eq(23800) }
-    And { result.percentage_changed.should eq(5.44) }
+    And { result.pixels_changed.should eq(2387) }
+    And { result.percentage_changed.should eq(0.55) }
   end
 end
