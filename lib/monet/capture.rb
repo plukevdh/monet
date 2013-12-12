@@ -12,6 +12,7 @@ module Monet
 
     def initialize(config)
       @config = Monet::Config.build_config(config)
+      @router = Monet::PathRouter.new(@config.base_url, @config.capture_dir)
 
       Capybara.default_driver = @config.driver
       Capybara.javascript_driver = @config.driver
@@ -26,25 +27,10 @@ module Monet
     end
 
     def capture(path, width)
-      url = normalize_path(path)
-      visit url
+      visit @router.build_url(path)
 
       page.driver.resize(width, MAX_HEIGHT)
-      page.driver.render(image_name(url, width), full: true)
-    end
-
-    private
-    def capture_path
-      @config.capture_dir
-    end
-
-    def normalize_path(path)
-      "#{@config.base_url}#{path}"
-    end
-
-    def image_name(path, width)
-      name = path.gsub(/https?:\/\//, '').gsub(/\//, '_')
-      "#{capture_path}/#{@config.base_url.host}/#{name}-#{width}.png"
+      page.driver.render(@router.route_url_path(path, width), full: true)
     end
   end
 end

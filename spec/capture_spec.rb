@@ -4,7 +4,7 @@ require 'monet/capture'
 describe Monet::Capture do
   Given(:path) { File.expand_path './spec/tmp/output' }
   Given(:url) { "http://google.com" }
-  Given(:capture_agent) { Monet::Capture.new(capture_dir: path ) }
+  Given(:capture_agent) { Monet::Capture.new(capture_dir: path, base_url: url) }
 
   before do
     Timecop.freeze
@@ -20,14 +20,14 @@ describe Monet::Capture do
 
   context "can pass config" do
     context "as a hash" do
-      Given(:capture_agent) { Monet::Capture.new(capture_dir: path) }
+      Given(:capture_agent) { Monet::Capture.new(capture_dir: path, base_url: url) }
       When(:config) { capture_agent.instance_variable_get :@config }
       Then { config.should be_a(Monet::Config) }
       Then { config.capture_dir.should == path }
     end
 
     context "as a Monet::Config" do
-      Given(:config) { Monet::Config.new(capture_dir: path) }
+      Given(:config) { Monet::Config.new(capture_dir: path, base_url: url) }
       Given(:capture_agent) { Monet::Capture.new(config) }
       When(:final) { capture_agent.instance_variable_get :@config }
       Then { final.should be_a(Monet::Config) }
