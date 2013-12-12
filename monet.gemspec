@@ -16,7 +16,7 @@ Gem::Specification.new do |gem|
     if CSS changes blow your UI up. Simply capture your page,
     make changes, run tests and compare the diff!
   }
-  gem.homepage      = "plukevdh.github.com/monet"
+  gem.homepage      = "http://plukevdh.github.com/monet"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
