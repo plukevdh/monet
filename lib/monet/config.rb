@@ -12,7 +12,8 @@ module Monet
       dimensions: [1024],
       base_url: nil,
       map: nil,
-      capture_dir: "./captures"
+      capture_dir: "./captures",
+      baseline_dir: "./baselines"
     }
 
     attr_accessor *DEFAULT_OPTIONS.keys
@@ -48,7 +49,11 @@ module Monet
     end
 
     def capture_dir=(path)
-      @capture_dir = File.expand_path(path)
+      @capture_dir = expand_path(path)
+    end
+
+    def baseline_dir=(path)
+      @baseline_dir = expand_path(path)
     end
 
     def map=(paths)
@@ -61,6 +66,11 @@ module Monet
       block.call(@map) if block_given? && type == :explicit
 
       @map
+    end
+
+    private
+    def expand_path(path)
+      File.expand_path(path)
     end
   end
 end

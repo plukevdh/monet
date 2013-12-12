@@ -12,7 +12,7 @@ module Monet
 
     def initialize(config)
       @config = Monet::Config.build_config(config)
-      @router = Monet::PathRouter.new(@config.base_url, @config.capture_dir)
+      @router = Monet::PathRouter.new(@config)
 
       Capybara.default_driver = @config.driver
       Capybara.javascript_driver = @config.driver
