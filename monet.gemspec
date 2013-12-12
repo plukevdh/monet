@@ -28,6 +28,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency('capybara')
   # gem.add_dependency('chunky_png')
   gem.add_dependency('oily_png')
+  gem.add_dependency('spidr')
 
   if RUBY_ENGINE == 'rbx'
     gem.add_dependency('rubysl')
@@ -38,5 +39,4 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency('rspec-given')
   gem.add_development_dependency('rspec')
   gem.add_development_dependency('timecop')
-  gem.add_development_dependency('pry')
 end
