@@ -13,7 +13,7 @@ describe Monet::Capture do
   after do
     Timecop.return
 
-    Dir.glob("#{path}/*.png").each do |file|
+    Dir.glob("#{path}/**/*.png").each do |file|
       File.delete(file)
     end
   end
@@ -38,13 +38,13 @@ describe Monet::Capture do
   context "converts name properly" do
     Given(:capture_agent) { Monet::Capture.new(capture_dir: path, base_url: url) }
     When { capture_agent.capture("/", 1024) }
-    Then { File.exist?("#{path}/google.com/-1024.png").should be_true }
+    Then { File.exist?("#{path}/google.com/google.com>-1024.png").should be_true }
   end
 
   context "prepends default protocol if missing" do
     Given(:capture_agent) { Monet::Capture.new(capture_dir: path, base_url: "http://www.facebook.com") }
     When { capture_agent.capture('/', 1024) }
-    Then { File.exist?("#{path}/www.facebook.com/-1024.png").should be_true }
+    Then { File.exist?("#{path}/www.facebook.com/www.facebook.com>-1024.png").should be_true }
   end
 
 end
