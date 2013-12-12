@@ -22,19 +22,28 @@ Or install it yourself as:
 
 The basic gem requires a config file that is somehow called on the app startup. This config primarily exists to give the gem a list of paths it needs to collect and either baseline or compare to previous baselines. This config might look something like this:
 
-    Monet::Config do |config|
-	  config.driver = :poltergeist
-	  config.dimensions = [1440,900]
+```ruby
+Monet.config do |config|
+  config.driver = :poltergeist
+  config.dimensions = [1440,900]
 
-	  config.map do |map|
-		map.add 'home/index'
-		map.add 'home/show'
-	  end
-    end
+  config.map do |map|
+    map.add 'home/index'
+    map.add 'home/show'
+  end
+
+  # alternatively...
+
+  config.map :spider
+end
+```
 
 ## Todo
+- Site spidering
+- Baseline caching
 - Browser/driver config
 - Parallelize PNG diffing
+- Dashboard
 - Rails integration
 - Sinatra/Rack integration
 - Web UI
