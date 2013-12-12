@@ -4,13 +4,13 @@ require 'monet/url_helpers'
 module Monet
   class CaptureMap
     extend Forwardable
-    include URLHelpers
 
     class PathCollection
+      include URLHelpers
       attr_reader :paths, :root_url
 
-      def initialize(root_url)
-        @root_url = root_url
+      def initialize(root_uri)
+        @root_url = root_uri.is_a?(URI) ? root_uri : parse_uri(root_uri)
         @paths = []
       end
 
@@ -47,9 +47,9 @@ module Monet
 
     attr_reader :type
 
-    def initialize(root_url, type=:explicit, &block)
+    def initialize(root_uri, type=:explicit, &block)
       @type = type
-      @path_helper = type_mapper.new parse_uri(root_url)
+      @path_helper = type_mapper.new root_uri
 
       yield(@path_helper) if block_given?
     end
@@ -63,14 +63,6 @@ module Monet
       when :spider
         PathSpider
       end
-    end
-
-    private
-    def parse_uri(path)
-      uri = URI.parse path
-      raise InvalidURL, "#{path} is not a valid url" if uri.class == URI::Generic
-
-      uri.to_s
     end
   end
 end

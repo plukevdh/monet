@@ -10,8 +10,8 @@ module Monet
     DEFAULT_OPTIONS = {
       driver: :poltergeist,
       dimensions: [1024],
-      map: nil,
       base_url: nil,
+      map: nil,
       capture_dir: "./captures"
     }
 
@@ -29,9 +29,13 @@ module Monet
       cfg
     end
 
-    def self.load_config(path="./config.yaml")
+    def self.load(path="./config.yaml")
       config = YAML::load(File.open(path))
-      new(config[config])
+      new(config)
+    end
+
+    def self.build_config(opts)
+      (opts.is_a? Monet::Config) ? opts : new(opts)
     end
 
     def base_url=(url)
@@ -47,13 +51,14 @@ module Monet
       @capture_dir = File.expand_path(path)
     end
 
-    def map(type=:explicit, paths=[], &block)
+    def map=(paths)
+      map.paths = paths unless paths.nil?
+    end
+
+    def map(type=:explicit, &block)
       @map ||= CaptureMap.new(base_url, type)
 
-      if type == :explicit
-        @map.paths = paths
-        block.call(@map) if block_given?
-      end
+      block.call(@map) if block_given? && type == :explicit
 
       @map
     end

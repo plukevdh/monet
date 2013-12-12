@@ -10,15 +10,16 @@ module Monet
 
     MAX_HEIGHT = 10000
 
-    def initialize(config={})
-      @config = (config.is_a? Monet::Config) ? config : Monet::Config.new(config)
+    def initialize(config)
+      @config = Monet::Config.build_config(config)
 
       Capybara.default_driver = @config.driver
+      Capybara.javascript_driver = @config.driver
     end
 
-    def capture_all(paths, dimensions)
-      paths.each do |path|
-        dimensions.each do |width|
+    def capture_all
+      @config.map.paths.each do |path|
+        @config.dimensions.each do |width|
           capture(path, width)
         end
       end
@@ -42,8 +43,8 @@ module Monet
     end
 
     def image_name(path, width)
-      name = path.gsub(/https?:\/\//, '').gsub(/\.]/, '_')
-      "#{capture_path}/#{name}-#{width}.png"
+      name = path.gsub(/https?:\/\//, '').gsub(/\//, '_')
+      "#{capture_path}/#{@config.base_url.host}/#{name}-#{width}.png"
     end
   end
 end

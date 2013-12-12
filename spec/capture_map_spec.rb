@@ -31,17 +31,17 @@ describe Monet::CaptureMap do
 
   context "requires full url" do
     When(:result) { Monet::CaptureMap.new("google.com") }
-    Then { result.should have_failed(Monet::CaptureMap::InvalidURL, /google.com is not a valid url/) }
+    Then { result.should have_failed(Monet::InvalidURL, /google.com is not a valid url/) }
   end
 
   context "requires valid url" do
     When(:result) { Monet::CaptureMap.new("google") }
-    Then { result.should have_failed(Monet::CaptureMap::InvalidURL, /google is not a valid url/) }
+    Then { result.should have_failed(Monet::InvalidURL, /google is not a valid url/) }
   end
 
   context "with name" do
     Given(:map) { Monet::CaptureMap.new("http://google.com") }
-    Then { map.root_url.should == "http://google.com" }
+    Then { map.root_url.to_s.should == "http://google.com" }
     And { map.paths.should == [] }
   end
 
@@ -54,7 +54,7 @@ describe Monet::CaptureMap do
     }
 
     context "add paths" do
-      Then { map.root_url.should == "http://google.com" }
+      Then { map.root_url.to_s.should == "http://google.com" }
       And { map.paths.should == ['home', 'test/new'] }
     end
   end

@@ -12,7 +12,7 @@ describe Monet::Config do
     When(:config) { Monet::Config.new(capture_dir: "./faker", base_url: "http://hoodie.io") }
     Then { config.driver.should == :poltergeist }
     And { config.capture_dir.should == File.expand_path("./faker") }
-    And { config.base_url.should == "http://hoodie.io" }
+    And { config.base_url.to_s.should == "http://hoodie.io" }
   end
 
   context "can set options" do
