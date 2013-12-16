@@ -1,6 +1,7 @@
 require 'vcr'
 require 'rspec/given'
 require 'timecop'
+require 'pry'
 
 VCR.configure do |c|
   c.cassette_library_dir = 'spec/cassettes'
@@ -9,5 +10,6 @@ VCR.configure do |c|
 end
 
 RSpec.configure do |c|
+  c.mock_with :flexmock
   c.treat_symbols_as_metadata_keys_with_true_values = true
 end

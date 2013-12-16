@@ -12,6 +12,12 @@ describe Monet::Compare do
   context "default compare" do
     Given(:compare) { Monet::Compare.new }
 
+    context "missing baseline" do
+      When(:result) { compare.compare("./missing_image.png", image_same) }
+      Then { result.should be_a(Monet::BaselessImage) }
+      And { result.path.should == image_same }
+    end
+
     context "identical image" do
       When(:result) { compare.compare(image_base, image_same) }
       Then { result.should_not be_modified }

@@ -35,7 +35,6 @@ Monet.config do |config|
   config.map :spider
 end
 ```
-
 ## Process
 
 Captures are saved into the following structure:
@@ -49,17 +48,16 @@ Captures are saved into the following structure:
 - /new is where the current capture run images are stored, pre-comparison with baseline.
 - /baselines is where all current baseline images are stored. persistent in-between capture runs.
 
-During the capture process, any new captures that do not have a match found in baselines to compare with are considered new baselines.  
-Any images that match baseline are discarded.  
-Any images that flag differences, are flagged for review.  
+During the capture process, any new captures that do not have a match found in baselines to compare with are considered new baselines.
+Any images that match baseline are discarded.
+Any images that flag differences, are flagged for review.
 
-Review involves checking flagged images and marking as 
-1. discard  
-2. flag as issue  
-3. accept as new baseline  
+Review involves checking flagged images and marking as
+1. discard
+2. flag as issue
+3. accept as new baseline
 
 ## Todo
-- Baseline caching
 - Parallelize PNG diffing
 - Dashboard
 - Rails integration
