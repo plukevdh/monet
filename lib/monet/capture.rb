@@ -15,22 +15,21 @@ module Monet
       @router = Monet::PathRouter.new(@config)
 
       Capybara.default_driver = @config.driver
-      Capybara.javascript_driver = @config.driver
     end
 
     def capture_all
       @config.map.paths.each do |path|
-        @config.dimensions.each do |width|
-          capture(path, width)
-        end
+        capture(path)
       end
     end
 
-    def capture(path, width)
+    def capture(path)
       visit @router.build_url(path)
 
-      page.driver.resize(width, MAX_HEIGHT)
-      page.driver.render(@router.route_url_path(path, width), full: true)
+      @config.dimensions.each do |width|
+        page.driver.resize(width, MAX_HEIGHT)
+        page.driver.render(@router.route_url_path(path, width), full: true)
+      end
     end
   end
 end
