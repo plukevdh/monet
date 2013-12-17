@@ -21,7 +21,7 @@ module Monet
 
         diff_strategy = @strategy_class.new(base_png, new_png)
 
-        (base_png.height - 1).times do |y|
+        base_png.height.times do |y|
           base_png.row(y).each_with_index do |pixel, x|
             diff_strategy.calculate_for_pixel(pixel, x, y)
           end

@@ -1,3 +1,5 @@
+require 'monet/errors'
+
 module Monet
   class DiffStrategy
     include ChunkyPNG::Color
@@ -55,7 +57,7 @@ module Monet
   class ColorBlend < DiffStrategy
     def initialize(base_image, diff_image)
       super
-      @output = ChunkyPNG::Image.new(base_image.width, diff_image.width, BLACK)
+      @output = ChunkyPNG::Image.new(base_image.width, base_image.height, BLACK)
     end
 
     def calculate_for_pixel(pixel, x, y)
