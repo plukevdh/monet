@@ -69,4 +69,27 @@ module Monet
       super
     end
   end
+
+  class Highlight < DiffStrategy
+    ALPHA_COMPONENT = 30
+
+    def initialize(base_image, diff_image)
+      super
+      @output = ChunkyPNG::Image.new(base_image.width, base_image.height, WHITE)
+    end
+
+    def colors(pixel)
+      rgb_colors = %w(r g b).map {|color| for_color(color, pixel)}
+    end
+
+    def calculate_for_pixel(pixel, x, y)
+      if pixel == @diff_image[x,y]
+        @output[x,y] = rgba(*colors(pixel), ALPHA_COMPONENT)
+      else
+        @output[x,y] = html_color("blue")
+      end
+
+      super
+    end
+  end
 end
