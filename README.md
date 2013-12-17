@@ -35,6 +35,7 @@ Monet.config do |config|
   config.map :spider
 end
 ```
+
 ## Process
 
 Captures are saved into the following structure:
@@ -42,10 +43,10 @@ Captures are saved into the following structure:
 ```
 /captures
 	/baselines
-	/new
+	/captures
 ```
 
-- /new is where the current capture run images are stored, pre-comparison with baseline.
+- /captures is where the current capture run images are stored, pre-comparison with baseline.
 - /baselines is where all current baseline images are stored. persistent in-between capture runs.
 
 During the capture process, any new captures that do not have a match found in baselines to compare with are considered new baselines.
