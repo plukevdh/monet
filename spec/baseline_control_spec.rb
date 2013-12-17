@@ -3,7 +3,7 @@ require 'monet/baseline_control'
 
 describe Monet::BaselineControl do
   Given(:control) do
-    config = flexmock("Config", capture_dir: "./spec/fixtures", baseline_dir: "./baseline", base_url: "http://google.com")
+    config = flexmock("Config", compare_type: "ColorBlend", capture_dir: "./spec/fixtures", baseline_dir: "./baseline", base_url: "http://google.com")
     flexmock Monet::BaselineControl.new(config)
   end
 
