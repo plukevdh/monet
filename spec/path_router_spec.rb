@@ -8,6 +8,11 @@ describe Monet::PathRouter do
   Given(:config) { Monet::Config.new(base_url: "http://google.com", capture_dir: "./capture", baseline_dir: "./baseline") }
   Given(:router) { Monet::PathRouter.new(config) }
 
+  context "knows base dir" do
+    When(:path) { router.root_dir }
+    Then { path.should == "google.com" }
+  end
+
   context "build url from path" do
     When(:url) { router.build_url("/space/manager") }
     Then { url.should == "http://google.com/space/manager" }

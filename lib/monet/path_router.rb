@@ -49,6 +49,7 @@ module Monet
     def host
       @base_url.host
     end
+    alias :root_dir :host
 
     private
     def image_name(base_dir, path, width)

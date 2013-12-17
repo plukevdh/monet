@@ -1,16 +1,30 @@
 require "monet/version"
-require "monet/errors"
-require "monet/capture_map"
+require 'monet/config'
 require "monet/capture"
 require "monet/compare"
+require "monet/baseline_control"
 
 module Monet
   class << self
-    def capture(opts)
-      config = Monet::Config.build_config(config)
+    def clean(opts)
+      config = load_config(opts)
+      Dir.glob(File.join(config.baseline_dir, "**", "*.png")).each do |img|
+        File.delete img
+      end
+    end
 
-      agent = Monet::Capture.new(config)
+    def capture(opts)
+      agent = Monet::Capture.new(load_config(opts))
       agent.capture_all
+    end
+
+    def compare(opts)
+      control = Monet::BaselineControl.new(opts)
+      control.run
+    end
+
+    def load_config(options)
+      Monet::Config.build_config(options)
     end
   end
 end

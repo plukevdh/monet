@@ -1,0 +1,11 @@
+:driver: :poltergeist
+:dimensions:
+  - 1400
+  - 900
+
+:base_url: "http://lance.com"
+
+:map:
+  - "/"
+  - "/aboutus"
+  - "/littleleague"

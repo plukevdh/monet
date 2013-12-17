@@ -12,6 +12,7 @@ module Monet
       dimensions: [1024],
       base_url: nil,
       map: nil,
+      compare_type: "ColorBlend",
       capture_dir: "./captures",
       baseline_dir: "./baselines"
     }
