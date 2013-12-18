@@ -32,20 +32,20 @@ describe Monet::Capture do
   context "converts name properly" do
     Given(:capture_agent) { Monet::Capture.new(capture_dir: path, base_url: url, dimensions: [900]) }
     When { capture_agent.capture("/") }
-    Then { File.exist?("#{path}/google.com/google.com>-900.png").should be_true }
+    Then { File.exist?("#{path}/google.com/google.com|-900.png").should be_true }
   end
 
   context "captures all dimensions requested" do
     Given(:capture_agent) { Monet::Capture.new(capture_dir: path, base_url: url, dimensions: [900, 1400]) }
     When { capture_agent.capture("/") }
-    Then { File.exist?("#{path}/google.com/google.com>-900.png").should be_true }
-    Then { File.exist?("#{path}/google.com/google.com>-1400.png").should be_true }
+    Then { File.exist?("#{path}/google.com/google.com|-900.png").should be_true }
+    Then { File.exist?("#{path}/google.com/google.com|-1400.png").should be_true }
   end
 
   context "prepends default protocol if missing" do
     Given(:capture_agent) { Monet::Capture.new(capture_dir: path, base_url: "http://www.facebook.com") }
     When { capture_agent.capture('/') }
-    Then { File.exist?("#{path}/www.facebook.com/www.facebook.com>-1024.png").should be_true }
+    Then { File.exist?("#{path}/www.facebook.com/www.facebook.com|-1024.png").should be_true }
   end
 
 end

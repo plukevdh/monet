@@ -41,7 +41,7 @@ module Monet
     # takes a path, returns the URL used to generate the image
     def route_path(path)
       url = path.split("/").last
-      path = url.split('>')[1..-1].join("/").gsub(/-\d+\.png/, "")
+      path = url.split('|')[1..-1].join("/").gsub(/-\d+\.png/, "")
 
       "#{@base_url}/#{path}"
     end
@@ -53,7 +53,7 @@ module Monet
 
     private
     def image_name(base_dir, path, width)
-      name = normalize_path(path).gsub(/\//, '>')
+      name = normalize_path(path).gsub(/\//, '|')
       "#{base_dir}/#{host}/#{name}-#{width}.png"
     end
 
