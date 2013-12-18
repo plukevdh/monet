@@ -21,7 +21,7 @@ Or install it yourself as:
 The basic gem requires a config file that is called in an app initializer or via the built-in rake task. This config primarily exists to give the gem a list of paths it needs to collect and either baseline or compare to previous baselines. This config might look something like this:
 
 ```ruby
-Monet.config do |config|
+config = Monet.config do |config|
   config.driver = :poltergeist
   config.dimensions = [1440,900]
 
@@ -36,24 +36,55 @@ Monet.config do |config|
 end
 ```
 
-## Process
+You can also use a yaml file and load it later
 
-Captures are saved into the following structure:
+```yaml
+:driver: :poltergeist
+:dimensions:
+  - 1024
+
+:base_url: "http://lance.com"
+
+:compare_type: Highlight
+:map:
+  - "/"
+  - "/aboutus"
+  - "/littleleague"
+```
+
+You can then use the config to run the capture and comparison toolset:
+
+```ruby
+Monet.capture(config)
+Monet.compare(config)
+```
+
+There are also rake tasks for this
 
 ```
+rake run ./config.yaml
+```
+
+## Process
+
+Captures are saved into the following structure by default:
+
+```
+/baselines
 /captures
-	/baselines
-	/captures
 ```
 
 - /captures is where the current capture run images are stored, pre-comparison with baseline.
 - /baselines is where all current baseline images are stored. persistent in-between capture runs.
+
+You can set these params using the `baseline_dir` and `captures_dir` options.
 
 During the capture process, any new captures that do not have a match found in baselines to compare with are considered new baselines.
 Any images that match baseline are discarded.
 Any images that flag differences, are flagged for review.
 
 Review involves checking flagged images and marking as
+
 1. discard
 2. flag as issue
 3. accept as new baseline

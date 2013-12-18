@@ -23,6 +23,10 @@ module Monet
       control.run
     end
 
+    def config(&block)
+      Monet::Config.config block
+    end
+
     def load_config(options)
       Monet::Config.build_config(options)
     end

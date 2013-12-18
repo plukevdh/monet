@@ -1,8 +1,11 @@
 require 'monet'
 
 namespace :monet do
-  task :clean do
-    config = Monet::Config.load
+  desc "clean out the baseline directory"
+  task :clean, :path do |t, args|
+    args.with_defaults(path: './config.yaml')
+
+    config = Monet::Config.load args[:path]
     Monet.clean config
   end
 
@@ -11,8 +14,10 @@ namespace :monet do
   end
 
   desc "Run the baseline comparison"
-  task :run do
-    config = Monet::Config.load
+  task :run, :path do |t, args|
+    args.with_defaults(path: './config.yaml')
+
+    config = Monet::Config.load args[:path]
     Monet.capture config
     Monet.compare config
   end
