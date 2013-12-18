@@ -26,7 +26,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency('rake')
   gem.add_dependency('poltergeist')
   gem.add_dependency('capybara')
-  # gem.add_dependency('chunky_png')
   gem.add_dependency('oily_png')
   gem.add_dependency('spidr')
 
