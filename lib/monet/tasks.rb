@@ -20,7 +20,7 @@ namespace :monet do
   end
 
 
-  namespace :thumbnail
+  namespace :thumbnail do
     desc "Thumbnail all baseline images"
     task :baseline do
       config = load_config(args)
