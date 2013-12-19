@@ -39,8 +39,9 @@ module Monet
       path.gsub(@capture_path, @baseline_path)
     end
 
-    def capture_to_thumbnail(path)
-      path.gsub(@capture_path, @thumbnail_path)
+    def to_thumbnail_path(path)
+      image_path = path.split(File::SEPARATOR)[-2..-1].join(File::SEPARATOR)
+      File.join @thumbnail_path, image_path
     end
 
     # takes a path, returns the URL used to generate the image

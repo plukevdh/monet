@@ -42,7 +42,7 @@ module Monet
     def thumbnail(path)
       img = ChunkyPNG::Image.from_file(path)
       short_edge = [img.width, img.height].min
-      save_path = @router.capture_to_thumbnail(path)
+      save_path = @router.to_thumbnail_path(path)
       save_dir = File.dirname save_path
 
       puts save_path

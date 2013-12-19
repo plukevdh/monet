@@ -49,8 +49,11 @@ describe Monet::PathRouter do
     Then { path.should == "#{baseline}/google.com/google.com|space|manager-900.png" }
   end
 
-  context "capture path to thumbnail path" do
-    When(:path) { router.capture_to_thumbnail("#{capture}/google.com/google.com|space|manager-900.png") }
+  context "can create thumbnail path" do
+    When(:path) { router.to_thumbnail_path("#{capture}/google.com/google.com|space|manager-900.png") }
+    Then { path.should == "#{thumbnail}/google.com/google.com|space|manager-900.png" }
+
+    When(:path) { router.to_thumbnail_path("#{baseline}/google.com/google.com|space|manager-900.png") }
     Then { path.should == "#{thumbnail}/google.com/google.com|space|manager-900.png" }
   end
 end

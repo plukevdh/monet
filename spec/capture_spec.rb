@@ -44,7 +44,7 @@ describe Monet::Capture do
     Then { File.exist?("#{path}/google.com/google.com|-1400.png").should be_true }
   end
 
-  context "prepends default protocol if missing" do
+  context "captures defualt size as 1024" do
     Given(:capture_agent) { Monet::Capture.new(capture_dir: path, base_url: "http://www.facebook.com") }
     When { capture_agent.capture('/') }
     Then { File.exist?("#{path}/www.facebook.com/www.facebook.com|-1024.png").should be_true }
