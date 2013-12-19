@@ -22,7 +22,7 @@ namespace :monet do
 
   namespace :thumbnail do
     desc "Thumbnail all baseline images"
-    task :baseline do
+    task :baseline, :path do |t, args|
       config = load_config(args)
       capture = Monet::Capture.new config
 
@@ -32,7 +32,8 @@ namespace :monet do
     end
 
     desc "Thumnail all captured images"
-    task :captures do
+    task :captures, :path do |t, args|
+      config = load_config(args)
       capture = Monet::Capture.new config
 
       images_from_dir(config.capture_dir).each do |image|
