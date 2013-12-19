@@ -14,7 +14,9 @@ module Monet
       map: nil,
       compare_type: "ColorBlend",
       capture_dir: "./captures",
-      baseline_dir: "./baselines"
+      baseline_dir: "./baselines",
+      thumbnail_dir: "./thumbnails",
+      thumbnail: false
     }
 
     attr_accessor *DEFAULT_OPTIONS.keys
@@ -49,12 +51,20 @@ module Monet
       @base_url
     end
 
+    def thumbnail?
+      !!thumbnail
+    end
+
     def capture_dir=(path)
       @capture_dir = expand_path(path)
     end
 
     def baseline_dir=(path)
       @baseline_dir = expand_path(path)
+    end
+
+    def thumbnail_dir=(path)
+      @thumbnail_dir = expand_path(path)
     end
 
     def map=(paths)

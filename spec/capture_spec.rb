@@ -1,4 +1,6 @@
 require 'spec_helper'
+
+require 'chunky_png'
 require 'monet/capture'
 
 describe Monet::Capture do
@@ -8,7 +10,7 @@ describe Monet::Capture do
 
   after do
     Dir.glob("#{path}/**/*.png").each do |file|
-      File.delete(file)
+      # File.delete(file)
     end
   end
 
@@ -48,4 +50,24 @@ describe Monet::Capture do
     Then { File.exist?("#{path}/www.facebook.com/www.facebook.com|-1024.png").should be_true }
   end
 
+  context "captured" do
+    Given(:thumb_path) { "#{path}/thumbnails/www.spider.io/www.spider.io|-1024.png" }
+    Given(:capture_agent) { Monet::Capture.new(capture_dir: path,
+      thumbnail_dir: File.join(path, "thumbnails"),
+      base_url: "http://www.spider.io",
+      thumbnail: true)
+    }
+    When { capture_agent.capture('/') }
+
+    context "can thumbnail an image" do
+      Then { File.exist?("#{path}/www.spider.io/www.spider.io|-1024.png").should be_true }
+      And { File.exist?(thumb_path).should be_true }
+    end
+
+    context "thumb is 200x200" do
+      When(:thumb) { ChunkyPNG::Image.from_file(thumb_path) }
+      Then { thumb.width.should == 200 }
+      And { thumb.height.should == 200 }
+    end
+  end
 end

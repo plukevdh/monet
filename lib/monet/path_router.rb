@@ -8,6 +8,7 @@ module Monet
       @base_url = parse_uri(config.base_url)
       @capture_path = config.capture_dir
       @baseline_path = config.baseline_dir
+      @thumbnail_path = config.thumbnail_dir
     end
 
     def build_url(path)
@@ -36,6 +37,10 @@ module Monet
 
     def capture_to_baseline(path)
       path.gsub(@capture_path, @baseline_path)
+    end
+
+    def capture_to_thumbnail(path)
+      path.gsub(@capture_path, @thumbnail_path)
     end
 
     # takes a path, returns the URL used to generate the image
