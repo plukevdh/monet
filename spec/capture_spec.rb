@@ -8,9 +8,9 @@ describe Monet::Capture do
   Given(:url) { "http://google.com" }
   Given(:capture_agent) { Monet::Capture.new(capture_dir: path, base_url: url) }
 
-  after do
+  after(:all) do
     Dir.glob("#{path}/**/*.png").each do |file|
-      # File.delete(file)
+      File.delete(file)
     end
   end
 

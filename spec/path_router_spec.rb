@@ -5,7 +5,8 @@ require 'monet/config'
 describe Monet::PathRouter do
   Given(:capture) { File.expand_path "./capture" }
   Given(:baseline) { File.expand_path "./baseline" }
-  Given(:config) { Monet::Config.new(base_url: "http://google.com", capture_dir: "./capture", baseline_dir: "./baseline") }
+  Given(:thumbnail) { File.expand_path "./thumbnail" }
+  Given(:config) { Monet::Config.new(base_url: "http://google.com", capture_dir: "./capture", baseline_dir: "./baseline", thumbnail_dir: "./thumbnail") }
   Given(:router) { Monet::PathRouter.new(config) }
 
   context "knows base dir" do
@@ -46,5 +47,10 @@ describe Monet::PathRouter do
   context "capture path to baseline path" do
     When(:path) { router.capture_to_baseline("#{capture}/google.com/google.com|space|manager-900.png") }
     Then { path.should == "#{baseline}/google.com/google.com|space|manager-900.png" }
+  end
+
+  context "capture path to thumbnail path" do
+    When(:path) { router.capture_to_thumbnail("#{capture}/google.com/google.com|space|manager-900.png") }
+    Then { path.should == "#{thumbnail}/google.com/google.com|space|manager-900.png" }
   end
 end

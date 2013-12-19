@@ -45,6 +45,8 @@ module Monet
       save_path = @router.capture_to_thumbnail(path)
       save_dir = File.dirname save_path
 
+      puts save_path
+
       cropped = img.crop(0, 0, short_edge, short_edge)
       resized = cropped.resize(200, 200)
 
