@@ -1,4 +1,4 @@
-require 'monet/path_router'
+require 'monet/image'
 require 'monet/changeset'
 require 'monet/baseless_image'
 require 'monet/compare'
@@ -11,20 +11,17 @@ module Monet
     attr_reader :flags
 
     def initialize(config)
-      @capture_dir = config.capture_dir
-      @baseline_dir = config.baseline_dir
+      @config = config
 
       strategy = Monet.const_get(config.compare_type)
 
       @comparer = Monet::Compare.new(strategy)
-      @router = Monet::PathRouter.new(config)
       @flags = []
     end
 
     def run
-      captures.each do |capture|
-        baseline_path = @router.capture_to_baseline(capture)
-        compare @comparer.compare(baseline_path, capture)
+      captures.each do |img|
+        compare @comparer.compare(img.baseline, img.capture)
       end
 
       @flags
@@ -40,7 +37,10 @@ module Monet
     end
 
     def captures
-      Dir.glob File.join(site_dir(@capture_dir), "*.png")
+      files = Dir.glob(File.join(@config.capture_dir, Monet::Image.host, "*.png"))
+      files.map do |path|
+        Monet::Image.new(path, @config)
+      end
     end
 
     def discard(path)
@@ -49,20 +49,14 @@ module Monet
     end
 
     def baseline(diff)
-      path = diff.path
-      to = site_dir(@baseline_dir)
+      image = diff.image, @config
 
-      FileUtils.mkpath to unless Dir.exists? to
-      FileUtils.move(path, to)
+      FileUtils.mkpath image.root_dir unless Dir.exists? image.root_dir
+      FileUtils.move(image.capture, image.baseline)
 
-      puts "baselining #{path}"
+      puts "baselining #{image.capture}"
 
-      @router.capture_to_baseline(path)
-    end
-
-    private
-    def site_dir(base)
-      File.join base, @router.root_dir
+      image.baseline
     end
   end
 end

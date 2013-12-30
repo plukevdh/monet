@@ -8,6 +8,10 @@ module Monet
       @path = path
     end
 
+    def image(config)
+      Monet::Image.new @path, config
+    end
+
     def modified?
       pixels_changed > 0
     end

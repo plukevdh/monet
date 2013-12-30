@@ -5,7 +5,7 @@ require 'capybara/poltergeist'
 require "capybara/dsl"
 
 require 'monet/config'
-require 'monet/path_router'
+require 'monet/image'
 
 module Monet
   class Capture
@@ -15,37 +15,42 @@ module Monet
 
     def initialize(config)
       @config = Monet::Config.build_config(config)
-      @router = Monet::PathRouter.new(@config)
 
       Capybara.default_driver = @config.driver
     end
 
     def capture_all
-      @config.map.paths.each do |path|
-        capture(path)
+      images = Image.from_config(@config)
+      images.each do |image|
+        capture(image)
       end
+
+      images
     end
 
-    def capture(path)
-      visit @router.build_url(path)
-
-      @config.dimensions.each do |width|
-        file_path = @router.route_url_path(path, width)
-
-        page.driver.resize(width, MAX_HEIGHT)
-        page.driver.render(file_path, full: true)
-
-        thumbnail(file_path) if @config.thumbnail?
+    def capture(image_or_path, width=nil)
+      if image_or_path.is_a? String
+        raise ArgumentError, "Width is required if you pass an image path rather than an image object" if width.nil?
+        image = Monet::Image.from_url("#{@config.base_url}#{image_or_path}".chomp("/"), @config, width)
+      else
+        image = image_or_path
       end
+
+      visit image.url unless current_url == image.url
+
+      file_path = image.capture
+
+      page.driver.resize(image.width, MAX_HEIGHT)
+      page.driver.render(file_path, full: true)
+
+      thumbnail(image) if @config.thumbnail?
     end
 
-    def thumbnail(path)
-      img = ChunkyPNG::Image.from_file(path)
+    def thumbnail(image)
+      img = ChunkyPNG::Image.from_file(image.capture)
       short_edge = [img.width, img.height].min
-      save_path = @router.to_thumbnail_path(path)
+      save_path = image.thumbnail
       save_dir = File.dirname save_path
-
-      puts save_path
 
       cropped = img.crop(0, 0, short_edge, short_edge)
       resized = cropped.resize(200, 200)
