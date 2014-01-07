@@ -21,35 +21,41 @@ module Monet
 
     attr_accessor *DEFAULT_OPTIONS.keys
 
+    # configure via options
     def initialize(opts={})
       DEFAULT_OPTIONS.each do |opt, default|
         send "#{opt}=", opts[opt] || default
       end
     end
 
+    # configure via block
     def self.config(&block)
       cfg = new
-      block.call cfg
+      yield cfg if block_given?
+
       cfg
     end
 
+    # configure via YAML
     def self.load(path="./config.yaml")
-      config = YAML::load(File.open(path))
-      new(config)
-    end
-
-    def self.build_config(opts)
-      (opts.is_a? Monet::Config) ? opts : new(opts)
+      opts = YAML::load(File.open(path))
+      new(opts)
     end
 
     def base_url=(url)
-      @base_url ||= parse_uri(url) unless url.nil?
+      @base_url = parse_uri(url) unless url.nil?
     end
 
     def base_url
       raise MissingBaseURL, "Please set the base_url in the config" unless @base_url
       @base_url
     end
+
+    def site
+      parse_uri(base_url).host
+    end
+    alias_method :host, :site
+    alias_method :root_dir, :site
 
     def thumbnail?
       !!thumbnail
@@ -68,13 +74,13 @@ module Monet
     end
 
     def map=(paths)
+      @map = nil
       map.paths = paths unless paths.nil?
     end
 
     def map(type=:explicit, &block)
       @map ||= CaptureMap.new(base_url, type)
-
-      block.call(@map) if block_given? && type == :explicit
+      yield @map if block_given?
 
       @map
     end

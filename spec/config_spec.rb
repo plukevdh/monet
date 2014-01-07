@@ -8,15 +8,14 @@ describe Monet::Config do
     And { config.capture_dir.should == File.expand_path("./captures") }
   end
 
-  context "can pass config to init" do
-    When(:config) { Monet::Config.new(capture_dir: "./faker", base_url: "http://hoodie.io") }
-    Then { config.driver.should == :poltergeist }
-    And { config.capture_dir.should == File.expand_path("./faker") }
-    And { config.base_url.to_s.should == "http://hoodie.io" }
+  context "can load yaml" do
+    When(:config) { Monet::Config.load }
+    Then { config.base_url.to_s.should == "http://lance.com" }
+    And { config.map.size.should == 3 }
   end
 
   context "can set options" do
-    When(:config) do
+    When(:config) {
       Monet::Config.config do |config|
         config.driver = :poltergeist
         config.dimensions = [1440,900]
@@ -27,7 +26,7 @@ describe Monet::Config do
           map.add 'home/show'
         end
       end
-    end
+    }
     Then { config.driver.should == :poltergeist }
     And { config.dimensions.should == [1440,900] }
     And { config.map.paths.should == ["home/index", "home/show"] }
@@ -53,6 +52,7 @@ describe Monet::Config do
       end
     end
     Then { config.map.should be_a(Monet::CaptureMap) }
+
     And { config.map.type.should == :spider }
   end
 end
