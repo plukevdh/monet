@@ -6,6 +6,8 @@ module Monet
     extend Forwardable
 
     class PathCollection
+      extend Forwardable
+
       include URLHelpers
       attr_reader :paths, :root_url
 
@@ -25,6 +27,8 @@ module Monet
       def normalized_path(path)
         path.chomp "/"
       end
+
+      def_delegators :@paths, :size, :length, :count
     end
 
     class PathSpider < PathCollection
@@ -54,7 +58,7 @@ module Monet
       yield(@path_helper) if block_given?
     end
 
-    def_delegators :@path_helper, :paths, :paths=, :add, :root_url
+    def_delegators :@path_helper, :paths, :paths=, :add, :root_url, :size, :count, :length
 
     def type_mapper
       case @type
