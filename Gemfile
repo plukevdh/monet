@@ -5,7 +5,7 @@ gemspec
 
 group :test do
   gem 'flexmock'
-  gem 'pry'
+  gem 'jazz_hands'
   gem 'webmock'
   gem 'vcr'
 end
