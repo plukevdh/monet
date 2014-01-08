@@ -12,7 +12,7 @@ module Monet
     end
 
     TYPES.each do |type|
-      define_method "#{type}_dir" do |filename|
+      define_method "#{type}_dir" do |filename=""|
         File.join @config.send("#{type}_dir"), @config.site, filename
       end
 
