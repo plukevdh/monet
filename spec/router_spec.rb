@@ -40,7 +40,7 @@ describe "Monet::Router" do
   context "can list out urls" do
     Given do
       config.dimensions = [1440,900]
-      config.map = ['home/index', 'home/show']
+      config.map = ['/home/index', '/home/show']
     end
 
     When(:urls) { router.capture_routes }
