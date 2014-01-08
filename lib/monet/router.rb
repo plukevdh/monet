@@ -40,7 +40,7 @@ module Monet
         url = "#{@config.base_url}#{path}".chomp("/")
         @config.dimensions.each do |width|
           urls[url] ||= []
-          urls[url] << url_to_filepath(path, width)
+          urls[url] << url_to_filepath(url, width)
         end
       end
 
