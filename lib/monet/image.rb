@@ -45,6 +45,9 @@ module Monet
         save_to = File.join save_to, File.basename(@path)
       end
 
+      save_dir = File.dirname(save_to)
+      FileUtils.mkdir_p save_dir unless Dir.exists?(save_dir)
+
       resized.save save_to
       save_to
     end
