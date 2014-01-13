@@ -53,7 +53,6 @@ module Monet
       image = diff.is_a?(String) ? Monet::Image.new(diff) : diff.image
 
       puts "baselining #{image.path}"
-      FileUtils.mkpath image.root_dir unless Dir.exists? image.root_dir
       image = rebase(image)
 
       # delete diff image
@@ -67,8 +66,16 @@ module Monet
     # returns a new image for the moved image
     def rebase(image)
       new_path = @router.baseline_dir(image.name)
-      FileUtils.move(image.path, new)
+
+      create_path_for_file(new_path)
+      FileUtils.move(image.path, new_path)
+
       Monet::Image.new(new_path)
+    end
+
+    def create_path_for_file(file)
+      path = File.dirname(file)
+      FileUtils.mkpath path unless Dir.exists? path
     end
   end
 end
