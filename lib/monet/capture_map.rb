@@ -47,7 +47,7 @@ module Monet
 
       private
       def normalize(spider_results)
-        spider_results.history.each {|path| add(path.to_s) }
+        spider_results.history.each {|path| add(path.path) }
       end
     end
 
