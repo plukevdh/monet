@@ -9,6 +9,6 @@ rvm:
 matrix:
   allow_failures:
     - rvm: rbx
-    - rvm: jruby
+    - rvm: jruby-19mode
 
 script: bundle exec rake test
