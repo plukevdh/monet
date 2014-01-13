@@ -2,7 +2,7 @@
 :dimensions:
   - 1024
 
-:base_url: "https://lance.com"
+:base_url: "https://staging.lance.com"
 
 :compare_type: Highlight
 :map: :spider

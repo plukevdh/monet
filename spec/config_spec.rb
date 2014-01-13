@@ -14,11 +14,11 @@ describe Monet::Config do
     And { config.map.size.should == 3 }
   end
 
-  context "can load a yaml from a path for spidering", vcr: { cassette_name: "spider", record: :new_episodes } do
+  context "can load a yaml from a path for spidering", vcr: { cassette_name: "spider-config", record: :new_episodes } do
     When(:config) { Monet::Config.load("./spec/fixtures/spider-config.yaml") }
-    Then { config.base_url.to_s.should == "https://lance.com" }
+    Then { config.base_url.to_s.should == "https://staging.lance.com" }
     And { config.map.type.should == :spider }
-    And { config.map.size.should == 66 }
+    And { config.map.size.should == 67 }
   end
 
   context "can set options" do
@@ -54,12 +54,11 @@ describe Monet::Config do
   context "can request spider agent instead of explicit paths" do
     When(:config) do
       Monet::Config.config do |config|
-        config.base_url = "http://www.spider.io/"
+        config.base_url = "http://staging.lance.com"
         config.map :spider
       end
     end
     Then { config.map.should be_a(Monet::CaptureMap) }
-
     And { config.map.type.should == :spider }
   end
 end

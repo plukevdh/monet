@@ -37,7 +37,8 @@ module Monet
       SKIP_PATHS = [/\?.*/]
 
       def paths
-        @paths = normalize Spidr.site(@root_url, ignore_links: ignores)
+        normalize Spidr.site(@root_url, ignore_links: ignores) if @paths.empty?
+        @paths
       end
 
       def ignores
@@ -46,7 +47,7 @@ module Monet
 
       private
       def normalize(spider_results)
-        spider_results.history.map &:to_s
+        spider_results.history.each {|path| add(path.to_s) }
       end
     end
 
