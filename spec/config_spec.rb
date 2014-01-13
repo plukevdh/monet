@@ -18,7 +18,7 @@ describe Monet::Config do
     When(:config) { Monet::Config.load("./spec/fixtures/spider-config.yaml") }
     Then { config.base_url.to_s.should == "https://staging.lance.com" }
     And { config.map.type.should == :spider }
-    And { config.map.size.should == 67 }
+    And { config.map.size.should == 64 }
   end
 
   context "can set options" do

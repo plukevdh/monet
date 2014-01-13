@@ -37,8 +37,10 @@ module Monet
       SKIP_PATHS = [/\?.*/]
 
       def paths
-        normalize Spidr.site(@root_url, ignore_links: ignores) if @paths.empty?
-        @paths
+        return @paths unless @paths.empty?
+
+        normalize Spidr.site(@root_url, ignore_links: ignores)
+        @paths.uniq!
       end
 
       def ignores
