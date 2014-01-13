@@ -15,13 +15,14 @@ module Monet
 
       strategy = Monet.const_get(config.compare_type)
 
+      @router = Monet::Router.new config
       @comparer = Monet::Compare.new(strategy)
       @flags = []
     end
 
     def run
       captures.each do |img|
-        compare @comparer.compare(img.baseline, img.capture)
+        compare @comparer.compare(@router.baseline_dir(img.name), img.path)
       end
 
       @flags
@@ -37,26 +38,37 @@ module Monet
     end
 
     def captures
-      files = Dir.glob(File.join(@config.capture_dir, Monet::Image.host, "*.png"))
+      files = Dir.glob(File.join(@config.capture_dir, @config.site, "*.png"))
       files.map do |path|
-        Monet::Image.new(path, @config)
+        Monet::Image.new(path)
       end
     end
 
     def discard(path)
       puts "discarding #{path}"
-      FileUtils.remove(path)
+      FileUtils.remove(path) if File.exists?(path)
     end
 
     def baseline(diff)
-      image = diff.image, @config
+      image = diff.is_a?(String) ? Monet::Image.new(diff) : diff.image
 
+      puts "baselining #{image.path}"
       FileUtils.mkpath image.root_dir unless Dir.exists? image.root_dir
-      FileUtils.move(image.capture, image.baseline)
+      image = rebase(image)
 
-      puts "baselining #{image.capture}"
+      # delete diff image
+      discard @router.diff_dir(image.name)
 
-      image.baseline
+      image.thumbnail!(@router.thumbnail_dir) if @config.thumbnail?
+      image.path
+    end
+
+    private
+    # returns a new image for the moved image
+    def rebase(image)
+      new_path = @router.baseline_dir(image.name)
+      FileUtils.move(image.path, new)
+      Monet::Image.new(new_path)
     end
   end
 end

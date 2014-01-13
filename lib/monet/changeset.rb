@@ -8,8 +8,8 @@ module Monet
       @path = path
     end
 
-    def image(config)
-      Monet::Image.new @path, config
+    def image
+      Monet::Image.new @path
     end
 
     def modified?

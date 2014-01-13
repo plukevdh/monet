@@ -16,6 +16,14 @@ module Monet
       name.include? "-diff"
     end
 
+    def diff_path
+      @path.gsub(".png", "-diff.png")
+    end
+
+    def flagged?
+      File.exists? diff_path
+    end
+
     def width
       @width ||= File.basename(@path, ".png").split("-").last.to_i
     end
@@ -30,6 +38,10 @@ module Monet
 
     def to_image
       ChunkyPNG::Image.from_file(@path)
+    end
+
+    def root_dir
+      File.dirname @path
     end
 
     def thumbnail!(save_to=nil)

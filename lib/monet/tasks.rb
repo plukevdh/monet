@@ -12,13 +12,15 @@ end
 namespace :monet do
   desc "clean out the baseline directory"
   task :clean, :path do |t, args|
-    Monet.clean load_config(args)
+    config = load_config(args)
+    Dir.glob(File.join(config.baseline_dir, "**", "*.png")).each do |img|
+      File.delete img
+    end
   end
 
   desc "Runs the site and grabs baselines"
   task :baseline => [:clean, :run] do
   end
-
 
   namespace :thumbnail do
     desc "Thumbnail all baseline images"
@@ -27,7 +29,7 @@ namespace :monet do
       capture = Monet::Capture.new config
 
       images_from_dir(config.baseline_dir).each do |image|
-        capture.thumbnail image
+        Monet::Image.new(image).thumbnail! config.thumbnail_dir
       end
     end
 
@@ -45,7 +47,7 @@ namespace :monet do
   desc "Run the baseline comparison"
   task :run, :path do |t, args|
     config = load_config(args)
-    Monet.capture config
-    Monet.compare config
+    Monet::Capture.new(config).capture_all
+    Monet::BaselineControl.new(config).run
   end
 end

@@ -1,5 +1,6 @@
 require 'spidr'
 require 'monet/url_helpers'
+require 'forwardable'
 
 module Monet
   class CaptureMap
