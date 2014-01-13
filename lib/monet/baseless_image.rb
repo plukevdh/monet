@@ -7,5 +7,9 @@ module Monet
     def initialize(path)
       @path = path
     end
+
+    def image
+      Monet::Image.new @path
+    end
   end
 end
