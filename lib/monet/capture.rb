@@ -17,6 +17,9 @@ module Monet
       @config = config
       @router = Monet::Router.new config
 
+      Capybara.register_driver :poltergeist do |app|
+        Capybara::Poltergeist::Driver.new(app, {js_errors: false})
+      end
       Capybara.default_driver = @config.driver
     end
 
