@@ -29,7 +29,7 @@ module Monet
         path.chomp "/"
       end
 
-      def_delegators :@paths, :size, :length, :count
+      def_delegators :paths, :size, :length, :count
     end
 
     class PathSpider < PathCollection

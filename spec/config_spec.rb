@@ -14,6 +14,13 @@ describe Monet::Config do
     And { config.map.size.should == 3 }
   end
 
+  context "can load a yaml from a path for spidering", vcr: { cassette_name: "spider", record: :new_episodes } do
+    When(:config) { Monet::Config.load("./spec/fixtures/spider-config.yaml") }
+    Then { config.base_url.to_s.should == "https://lance.com" }
+    And { config.map.type.should == :spider }
+    And { config.map.size.should == 66 }
+  end
+
   context "can set options" do
     When(:config) {
       Monet::Config.config do |config|

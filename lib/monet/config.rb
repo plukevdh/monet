@@ -75,7 +75,8 @@ module Monet
 
     def map=(paths)
       @map = nil
-      map.paths = paths unless paths.nil?
+      return @map if paths.nil?
+      paths == :spider ? map(paths) : (map.paths = paths)
     end
 
     def map(type=:explicit, &block)

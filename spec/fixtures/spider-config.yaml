@@ -1,0 +1,8 @@
+:driver: :poltergeist
+:dimensions:
+  - 1024
+
+:base_url: "https://lance.com"
+
+:compare_type: Highlight
+:map: :spider
