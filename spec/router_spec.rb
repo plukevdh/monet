@@ -26,9 +26,19 @@ describe "Monet::Router" do
       Then { route.should == "/#{type}s/#{config.site}/about-500.png" }
     end
 
-    context "can get the diff for a path" do
-      When(:route) { router.diff_path expand(config.send("#{type}_dir"), "lance.com", "about-500.png") }
-      Then { route.should == expand(config.baseline_dir, "lance.com", "about-500-diff.png") }
+    context "can get the root dir for a #{type}" do
+      When(:route) { router.send "#{type}_dir" }
+      Then { route.should == expand(config.send("#{type}_dir"), "lance.com") }
+    end
+
+    context "can get the diff dir for a path" do
+      When(:route) { router.diff_dir "lance.com|about-500.png" }
+      Then { route.should == expand(config.baseline_dir, "lance.com", "lance.com|about-500-diff.png") }
+    end
+
+    context "can get the diff url for a path" do
+      When(:route) { router.diff_url "lance.com|about-500.png" }
+      Then { route.should == "/baselines/lance.com/lance.com|about-500-diff.png" }
     end
   end
 
@@ -73,4 +83,8 @@ describe "Monet::Router" do
     it_should_behave_like "type routing", "thumbnail"
   end
 
+  context "knows how to get the base diff dir" do
+    When(:route) { router.diff_dir }
+    Then { route.should == expand(config.baseline_dir, "lance.com") }
+  end
 end
