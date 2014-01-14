@@ -19,7 +19,7 @@ module Monet
     end
 
     def initialize
-      @cache = {}
+      reset
     end
 
     def_delegators :@cache, :size, :length, :count, :[]
@@ -50,6 +50,14 @@ module Monet
       end
 
       logger
+    end
+
+    def reset
+      @cache = {}
+    end
+
+    def self.reset
+      instance.reset
     end
 
     def failures
