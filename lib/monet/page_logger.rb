@@ -1,11 +1,28 @@
 require 'csv'
+require 'singleton'
+
 require 'monet/errors'
 
 module Monet
   class PageLogger
+    include Singleton
+    extend Forwardable
+
+    module Helpers
+      def log_page(url, status)
+        PageLogger.instance.add(url, status)
+      end
+
+      def failed?(url)
+        PageLogger.instance.failed? url
+      end
+    end
+
     def initialize
       @cache = {}
     end
+
+    def_delegators :@cache, :size, :length, :count, :[]
 
     def status_for(url)
       status = @cache[url]

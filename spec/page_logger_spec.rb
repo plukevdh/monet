@@ -44,16 +44,30 @@ describe Monet::PageLogger do
       When(:result) { log.status_for(url) }
       Then { result.should have_failed(Monet::Errors::UnseenURL, "There is no recorded status for #{url}") }
     end
+
+    context "can count records" do
+      Then { log.size.should == 4 }
+    end
+
+    context "can reference like an array" do
+      Then { log["http://google.com"].should == 200 }
+      And { log["http://google.com/notathing"].should == 404 }
+    end
+
+    context "cannot set method on log directly" do
+      When(:result) { log["test.com"] = 209 }
+      Then { result.should have_failed }
+    end
   end
 
   context "initialized logger" do
     it_should_behave_like "valid logger" do
-      Given(:log) { Monet::PageLogger.new }
+      Given(:log) { Monet::PageLogger.instance }
     end
   end
 
   context "log persistance" do
-    Given(:log) { Monet::PageLogger.new }
+    Given(:log) { Monet::PageLogger.instance }
     Given(:path) { "./spec/tmp/output/log.txt" }
     When { log.save(path) }
 
