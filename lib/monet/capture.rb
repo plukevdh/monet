@@ -6,6 +6,7 @@ require "capybara/dsl"
 
 require 'monet/router'
 require 'monet/image'
+require 'monet/error_image'
 
 module Monet
   class Capture
@@ -29,10 +30,7 @@ module Monet
         visit_once url
 
         paths.each do |path|
-          image = Monet::Image.new path
-          capture(url, image)
-
-          images << image
+          images << capture(url, path)
         end
       end
 
@@ -52,6 +50,9 @@ module Monet
       page.driver.render(image.path, full: true)
 
       image.thumbnail!(@router.thumbnail_dir) if @config.thumbnail?
+
+      return ErrorImage.new(image.path, page.status_code) if (page.status_code && page.status_code >= 400)
+      image
     end
 
     private

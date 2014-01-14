@@ -38,6 +38,14 @@ describe Monet::Capture do
       When { capture_agent.capture("#{url}/chrome", img) }
       Then { File.exist?("#{path}/google.com/google.com|chrome-1024.png").should be_true }
     end
+
+    context "tracks error pages" do
+      Given(:img) { Monet::Image.new(File.join(path, "google.com", "notapath-800.png")) }
+      When(:captured) { capture_agent.capture("#{url}/notapath", img) }
+      Then { captured.should be_a(Monet::ErrorImage) }
+      And { File.exist?(captured.path).should be_true }
+      And { captured.error.should eq(404) }
+    end
   end
 
   context "converts name properly" do
