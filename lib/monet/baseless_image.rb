@@ -1,5 +1,3 @@
-require 'fileutils'
-
 module Monet
   class BaselessImage
     attr_reader :path
