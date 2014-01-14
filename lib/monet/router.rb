@@ -13,7 +13,7 @@ module Monet
 
     TYPES.each do |type|
       define_method "#{type}_dir" do |filename=""|
-        File.join(@config.send("#{type}_dir"), @config.site, filename).chomp("/")
+        clean File.join(@config.send("#{type}_dir"), @config.site, filename)
       end
 
       define_method "#{type}_url" do |filename|
@@ -26,12 +26,12 @@ module Monet
       url = path.split("/").last
       path = url.split('|')[1..-1].join("/").gsub(/-\d+\.png/, "")
 
-      "#{@config.base_url}/#{path}"
+      clean "#{@config.base_url}/#{path}"
     end
 
     def diff_dir(filename="")
       filename = filename.gsub(".png", "-diff.png") unless filename.empty?
-      File.join(@config.baseline_dir, @config.site, filename).chomp("/")
+      clean File.join(@config.baseline_dir, @config.site, filename)
     end
 
     def diff_url(path)
@@ -42,7 +42,7 @@ module Monet
     def capture_routes
       urls = {}
       @config.map.paths.each do |path|
-        url = "#{@config.base_url}#{path}".chomp("/")
+        url = clean "#{@config.base_url}#{path}"
         @config.dimensions.each do |width|
           urls[url] ||= []
           urls[url] << url_to_filepath(url, width)
