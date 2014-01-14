@@ -45,6 +45,7 @@ describe Monet::Capture do
       Then { captured.should be_a(Monet::ErrorImage) }
       And { File.exist?(captured.path).should be_true }
       And { captured.error.should eq(404) }
+      And { Monet::PageLogger.instance.status_for("https://google.com/notapath").should == 404 }
     end
   end
 

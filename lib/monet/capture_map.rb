@@ -1,6 +1,8 @@
-require 'spidr'
-require 'monet/url_helpers'
 require 'forwardable'
+require 'spidr'
+
+require 'monet/url_helpers'
+require 'monet/page_logger'
 
 module Monet
   class CaptureMap
@@ -36,10 +38,15 @@ module Monet
       SKIP_EXT = %w(js css png jpg mp4 txt zip ico ogv ogg pdf gz)
       SKIP_PATHS = [/\?.*/]
 
+      include Monet::PageLogger::Helpers
+
       def paths
         return @paths unless @paths.empty?
 
-        normalize Spidr.site(@root_url, ignore_links: ignores)
+        normalize Spidr.site(@root_url, ignore_links: ignores) do |spider|
+          spider.every_page {|page| log_page page.url, page.code }
+        end
+
         @paths.uniq!
       end
 

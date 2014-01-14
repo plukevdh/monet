@@ -62,10 +62,21 @@ describe Monet::CaptureMap do
   context "spider mapper", vcr: { cassette_name: "spider-map", record: :new_episodes } do
     Given(:map) { Monet::CaptureMap.new("http://staging.lance.com", :spider) }
     When(:paths) { map.paths }
-    Then { paths.size.should == 64 }
-    And { paths.first.end_with?("/").should be false }
-    And { paths.first.start_with?("http://").should be_false }
-    And { paths.any? {|p| p.end_with? "css" }.should be_false }
+
+    context "captures paths" do
+      Then { paths.size.should == 64 }
+      And { paths.first.end_with?("/").should be false }
+      And { paths.first.start_with?("http://").should be_false }
+      And { paths.any? {|p| p.end_with? "css" }.should be_false }
+    end
+
+    context "logs paths for reference" do
+      Given(:log) { Monet::PageLogger.instance }
+      Then { log.size.should == 64 }
+      And { log.instance_variable_get(:@cache).values.should == paths }
+      And { log.failed?("http://staging.lance.com/snack").should be_true }
+      And { log.failed?("http://staging.lance.com/").should be_false }
+    end
   end
 end
 

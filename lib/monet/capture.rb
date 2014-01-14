@@ -7,10 +7,12 @@ require "capybara/dsl"
 require 'monet/router'
 require 'monet/image'
 require 'monet/error_image'
+require 'monet/page_logger'
 
 module Monet
   class Capture
     include Capybara::DSL
+    include Monet::PageLogger::Helpers
 
     MAX_HEIGHT = 10000
 
@@ -51,7 +53,9 @@ module Monet
 
       image.thumbnail!(@router.thumbnail_dir) if @config.thumbnail?
 
-      return ErrorImage.new(image.path, page.status_code) if (page.status_code && page.status_code >= 400)
+      log_page(url, page.status_code)
+      return ErrorImage.new(image.path, page.status_code) if failed?(url)
+
       image
     end
 
