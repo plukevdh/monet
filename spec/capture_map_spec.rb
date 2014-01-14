@@ -73,9 +73,9 @@ describe Monet::CaptureMap do
     context "logs paths for reference" do
       Given(:log) { Monet::PageLogger.instance }
       Then { log.size.should == 64 }
-      And { log.instance_variable_get(:@cache).values.should == paths }
+      And { log.instance_variable_get(:@cache).keys.map {|url| URI.parse(url).path }.should == paths }
       And { log.failed?("http://staging.lance.com/snack").should be_true }
-      And { log.failed?("http://staging.lance.com/").should be_false }
+      And { log.failed?("http://staging.lance.com").should be_false }
     end
   end
 end

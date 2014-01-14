@@ -43,9 +43,11 @@ module Monet
       def paths
         return @paths unless @paths.empty?
 
-        normalize Spidr.site(@root_url, ignore_links: ignores) do |spider|
+        results = Spidr.site(@root_url, ignore_links: ignores) do |spider|
           spider.every_page {|page| log_page page.url, page.code }
         end
+
+        normalize results
 
         @paths.uniq!
       end
