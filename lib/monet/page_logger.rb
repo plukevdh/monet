@@ -32,7 +32,7 @@ module Monet
     end
 
     def add(url, status)
-      @cache[url] = status.to_i
+      @cache[normalize_url(url)] = status.to_i
     end
 
     def save(path)
@@ -66,6 +66,11 @@ module Monet
 
     def failed?(url)
       !succeeded?(url)
+    end
+
+    private
+    def normalize_url(url)
+      url.to_s.chomp("/")
     end
   end
 end
