@@ -18,6 +18,16 @@ namespace :monet do
     end
   end
 
+  desc "Captures a spider result list"
+  task :spider do |t, args|
+    config = load_config(args)
+    Monet::CaptureMap.new(config.base_url, :spider).paths
+
+    savedir = File.join File.dirname(args[:path]), "spider.txt"
+    Monet::PageLogger.instance.save(savedir)
+  end
+
+
   desc "Runs the site and grabs baselines"
   task :baseline => [:clean, :run] do
   end
