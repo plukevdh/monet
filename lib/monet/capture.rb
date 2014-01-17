@@ -29,7 +29,7 @@ module Monet
     def capture_all
       images = []
       @router.capture_routes.map do |url, paths|
-        visit_once url
+        # visit_once url
 
         paths.each do |path|
           images << capture(url, path)
