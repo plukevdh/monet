@@ -40,11 +40,7 @@ module Monet
     end
 
     def capture(url, image_or_save_path)
-      if image_or_save_path.is_a? String
-        image = Monet::Image.new image_or_save_path
-      else
-        image = image_or_save_path
-      end
+      image = (image_or_save_path.is_a? String) ? Monet::Image.new(image_or_save_path) : image_or_save_path
 
       visit_once url
 
