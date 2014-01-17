@@ -27,9 +27,12 @@ namespace :monet do
     Monet::PageLogger.instance.save(savedir)
   end
 
-
   desc "Runs the site and grabs baselines"
-  task :baseline => [:clean, :run] do
+  task :baseline => [:clean, :run] do |t, args|
+    config = load_config(args)
+
+    savedir = File.join File.dirname(args[:path]), "spider.txt"
+    Monet::PageLogger.instance.save(savedir)
   end
 
   namespace :thumbnail do
